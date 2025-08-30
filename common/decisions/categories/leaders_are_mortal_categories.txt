@@ -1,0 +1,4 @@
+leader_illness_category = {
+    icon = GFX_decision_generic_political
+    allowed = { always = yes }
+}

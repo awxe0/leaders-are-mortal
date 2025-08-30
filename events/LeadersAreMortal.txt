@@ -1,0 +1,77 @@
+add_namespace = leaders_are_mortal
+
+country_event = {
+    id = leaders_are_mortal.1
+    title = leaders_are_mortal.1.t
+    desc = leaders_are_mortal.1.desc
+    picture = GFX_evt_leader_death
+
+    is_triggered_only = no
+
+    trigger = {
+        NOT = { has_country_flag = leader_death_happened }
+        has_stability < 0.7
+        date > 1939.1.1
+    }
+
+    mean_time_to_happen = {
+        months = 6
+        modifier = {
+            factor = 0.5
+            has_stability < 0.3
+        }
+        modifier = {
+            factor = 2.0
+            has_stability > 0.8
+        }
+    }
+
+    immediate = {
+        set_country_flag = leader_death_happened
+        log = "[GetDateText]: Leader crisis event triggered (leaders_are_mortal.1)"
+    }
+
+    option = {
+        name = leaders_are_mortal.1.a
+        if = {
+            limit = { has_stability < 0.02 }
+            random_list = {
+                25 = { remove_country_leader = yes add_stability = -0.10 add_war_support = -0.05 tooltip = leaders_are_mortal.1.poison }
+                25 = { remove_country_leader = yes add_war_support = -0.15 tooltip = leaders_are_mortal.1.gunshot }
+                25 = { remove_country_leader = yes add_stability = -0.20 tooltip = leaders_are_mortal.1.bomb }
+                25 = { remove_country_leader = yes add_political_power = -50 tooltip = leaders_are_mortal.1.accident }
+            }
+        }
+        else = {
+            random_list = {
+                15 = { set_country_flag = leader_ill tooltip = leaders_are_mortal.1.typhus }
+                15 = { set_country_flag = leader_ill tooltip = leaders_are_mortal.1.malaria modifier = { factor = 2.0 OR = { has_country_flag = tropical_climate tag = { BRA IND ETH } } } }
+                15 = { set_country_flag = leader_ill tooltip = leaders_are_mortal.1.dysentery }
+                15 = { set_country_flag = leader_ill tooltip = leaders_are_mortal.1.tuberculosis }
+                15 = { set_country_flag = leader_ill tooltip = leaders_are_mortal.1.cholera }
+                10 = { remove_country_leader = yes add_stability = -0.2 tooltip = leaders_are_mortal.1.instability }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = leaders_are_mortal.2
+    title = leaders_are_mortal.2.t
+    desc = leaders_are_mortal.2.desc
+    picture = GFX_evt_leader_recovery
+
+    is_triggered_only = yes
+
+    immediate = {
+    log = "[GetDateText]: Treatment outcome event triggered (leaders_are_mortal.2) with treatment_quality = [GetVariable.treatment_quality]"
+    }
+
+    option = {
+        name = leaders_are_mortal.2.a
+        random_list = {
+            $treatment_quality$ = { add_stability = 0.05 tooltip = leaders_are_mortal.2.recovery }
+            100 = { calc = { 100 - $treatment_quality$ } remove_country_leader = yes add_stability = -0.15 tooltip = leaders_are_mortal.2.death }
+        }
+    }
+}

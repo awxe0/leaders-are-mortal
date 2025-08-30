@@ -1,0 +1,41 @@
+leader_illness_category = {
+    treat_leader_illness_standard = {
+        icon = GFX_decision_generic_healthcare
+        cost = 50
+
+        visible = {
+            has_country_flag = leader_ill
+        }
+
+        available = {
+            political_power > 50
+        }
+
+        complete_effect = {
+            add_political_power = -50
+            set_variable = { var = treatment_quality value = 50 }
+            country_event = { id = leaders_are_mortal.2 days = 30 random_days = 30 }
+            clr_country_flag = leader_ill
+        }
+    }
+
+    treat_leader_illness_advanced = {
+        icon = GFX_decision_generic_healthcare_advanced
+        cost = 150
+
+        visible = {
+            has_country_flag = leader_ill
+        }
+
+        available = {
+            political_power > 150
+        }
+
+        complete_effect = {
+            add_political_power = -150
+            set_variable = { var = treatment_quality value = 80 }
+            country_event = { id = leaders_are_mortal.2 days = 30 random_days = 30 }
+            clr_country_flag = leader_ill
+        }
+    }
+}
